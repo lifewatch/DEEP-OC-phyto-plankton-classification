@@ -87,7 +87,4 @@ RUN git clone -b $branch https://github.com/woutdecrop/phyto-plankton-classifica
 EXPOSE 5000 6006 8888
 
 # Launch deepaas
-# CMD ["cd phyto-plankton-classification"]
-# CMD ["pip3 install -e ."]
-# CMD ["cd .."]
-# CMD ["deepaas-run", "--listen-ip", "0.0.0.0", "--listen-port", "5000"]
+CMD ["deepaas-run", "--listen-ip", "0.0.0.0", "--listen-port", "5000"]
