@@ -21,7 +21,7 @@ LABEL version='0.0.1'
 # 
 
 # What user branch to clone [!]
-ARG branch=master
+ARG branch=vliz
 
 # If to install JupyterLab
 ARG jlab=true
@@ -78,8 +78,8 @@ RUN if [ "$jlab" = true ]; then \
     else echo "[INFO] Skip JupyterLab installation!"; fi
 
 # Install user app
-RUN git clone -b $branch https://github.com/woutdecrop/phytoplankton_species_classifier && \
-    cd  phytoplankton_species_classifier && \
+RUN git clone -b $branch https://github.com/woutdecrop/phyto-plankton-classification && \
+    cd  phyto-plankton-classification && \
     pip3 install --no-cache-dir -e . && \
     cd ..
 
@@ -87,4 +87,7 @@ RUN git clone -b $branch https://github.com/woutdecrop/phytoplankton_species_cla
 EXPOSE 5000 6006 8888
 
 # Launch deepaas
-CMD ["deepaas-run", "--listen-ip", "0.0.0.0", "--listen-port", "5000"]
+# CMD ["cd phyto-plankton-classification"]
+# CMD ["pip3 install -e ."]
+# CMD ["cd .."]
+# CMD ["deepaas-run", "--listen-ip", "0.0.0.0", "--listen-port", "5000"]
