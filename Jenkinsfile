@@ -8,7 +8,7 @@ pipeline {
     }
 
     environment {
-        dockerhub_repo = "deephdc/uc-woutdecrop-deep-oc-phytoplankton_species_classifier"
+        dockerhub_repo = "deephdc/uc-woutdecrop-deep-oc-phyto-plankton-classifier"
         base_cpu_tag = "2.9.1"
         base_gpu_tag = "2.9.1-gpu"
     }

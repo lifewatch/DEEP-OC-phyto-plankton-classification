@@ -1,47 +1,73 @@
-# Dockerfile may have following Arguments:
-# tag - tag for the Base image, (e.g. 2.9.1 for tensorflow)
-# branch - user repository branch to clone (default: master, another option: test)
-# jlab - if to insall JupyterLab (true) or not (false)
-#
-# To build the image:
-# $ docker build -t <dockerhub_user>/<dockerhub_repo> --build-arg arg=value .
-# or using default args:
-# $ docker build -t <dockerhub_user>/<dockerhub_repo> .
-#
-# [!] Note: For the Jenkins CI/CD pipeline, input args are defined inside the
-# Jenkinsfile, not here!
+# Dockerfile may have two Arguments: tag, branch
+# tag - tag for the Base image, (e.g. 1.10.0-py3 for tensorflow)
+# branch - user repository branch to clone (default: master, other option: test)
 
-ARG tag=2.9.1
+ARG tag=1.14.0-py3
 
-# Base image, e.g. tensorflow/tensorflow:2.9.1
+# Base image, e.g. tensorflow/tensorflow:1.12.0-py3
 FROM tensorflow/tensorflow:${tag}
 
-LABEL maintainer='Decrop Wout'
-LABEL version='0.0.1'
-# 
+# Add container's metadata to appear along the models metadata
+ENV CONTAINER_MAINTAINER "Wout Decrop <wout.decrop@vliz.be>"
+ENV CONTAINER_VERSION "0.1"
+ENV CONTAINER_DESCRIPTION "DEEP as a Service Container: phyt-plankton Classification"
 
-# What user branch to clone [!]
+# What user branch to clone (!)
 ARG branch=vliz
-
 # If to install JupyterLab
 ARG jlab=true
+# Oneclient version
+ARG oneclient_ver=19.02.0.rc2-1~bionic
 
-# Install Ubuntu packages
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+# Install ubuntu updates and python related stuff
+# link python3 to python, pip3 to pip, if needed
+ENV DEBIAN_FRONTEND=noninteractive
+# Install required packages
+RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        git \
-        curl \
-        nano \
-        python3-pip \
-    && rm -rf /var/lib/apt/lists/*
+         git \
+         curl \
+         wget \
+         psmisc \
+         python3-setuptools \
+         python3-pip \
+         python3-wheel \
+         libgl1 \
+         libsm6 \
+         libxrender1 \
+         libfontconfig1 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /root/.cache/pip/* \
+    && rm -rf /tmp/*
 
-# Update python packages
-# [!] Remember: DEEP API V2 only works with python>=3.6
-RUN python3 --version && \
-    pip3 install --no-cache-dir --upgrade pip "setuptools<60.0.0" wheel
+# Install OpenCV-Python (replace version with the one you want)
+RUN pip3 install --upgrade pip setuptools wheel \
+    && pip3 install opencv-python==3.4.17.61
 
-# TODO: remove setuptools version requirement when [1] is fixed
-# [1]: https://github.com/pypa/setuptools/issues/3301
+# RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+#     apt-get install -y --no-install-recommends \
+#          git \
+#          curl \
+#          wget \
+#          psmisc \
+#          python3-setuptools \
+#          python3-pip \
+#          python3-wheel && \
+#     apt-get clean && \
+#     rm -rf /var/lib/apt/lists/* && \
+#     rm -rf /root/.cache/pip/* && \
+#     rm -rf /tmp/* && \
+#     python --version && \
+#     pip --version
+
+# RUN pip install --upgrade pip setuptools wheel
+
+# # Needed for open-cv
+# RUN apt-get update && \
+#     apt-get install -y libgl1 libsm6 libxrender1 libfontconfig1 && \
+#     apt-get install -y python3-opencv
+
 
 # Set LANG environment
 ENV LANG C.UTF-8
@@ -49,42 +75,93 @@ ENV LANG C.UTF-8
 # Set the working directory
 WORKDIR /srv
 
-# Install rclone (needed if syncing with NextCloud for training; otherwise remove)
-RUN curl -O https://downloads.rclone.org/rclone-current-linux-amd64.deb && \
+# Install rclone
+RUN wget https://downloads.rclone.org/rclone-current-linux-amd64.deb && \
     dpkg -i rclone-current-linux-amd64.deb && \
     apt install -f && \
-    mkdir /srv/.rclone/ && \
-    touch /srv/.rclone/rclone.conf && \
+    mkdir /srv/.rclone/ && touch /srv/.rclone/rclone.conf && \
     rm rclone-current-linux-amd64.deb && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /root/.cache/pip/* && \
+    rm -rf /tmp/*
 
-ENV RCLONE_CONFIG=/srv/.rclone/rclone.conf
+# Install oneclient for ONEDATA
+RUN curl -sS  http://get.onedata.org/oneclient-1902.sh | bash -s -- oneclient="$oneclient_ver" && \
+    apt-get clean && \
+    mkdir -p /mnt/onedata && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /tmp/*
 
-# Install DEEPaaS from source until 2.1 release is made to PyPi
-RUN pip3 install --no-cache-dir --upgrade git+https://github.com/indigo-dc/deepaas.git@master
-
-# Initialization scripts
+# Install deep-start script
+# N.B.: This repository also contains run_jupyter.sh
 RUN git clone https://github.com/deephdc/deep-start /srv/.deep-start && \
     ln -s /srv/.deep-start/deep-start.sh /usr/local/bin/deep-start && \
     ln -s /srv/.deep-start/run_jupyter.sh /usr/local/bin/run_jupyter
 
+# Install FLAAT (FLAsk support for handling Access Tokens)
+RUN pip install --no-cache-dir flaat && \
+    rm -rf /root/.cache/pip/* && \
+    rm -rf /tmp/*
+
+# Disable FLAAT authentication by default
+ENV DISABLE_AUTHENTICATION_AND_ASSUME_AUTHENTICATED_USER yes
+
+# Install DEEPaaS from PyPi:
+RUN pip install --no-cache-dir deepaas && \
+    rm -rf /root/.cache/pip/* && \
+    rm -rf /tmp/*
+
+# Useful tool to debug extensions loading
+RUN pip install --no-cache-dir entry_point_inspector && \
+    rm -rf /root/.cache/pip/* && \
+    rm -rf /tmp/*
+
+# Install DEEP debug_log scripts:
+RUN git clone https://github.com/deephdc/deep-debug_log /srv/.debug_log
+
 # Install JupyterLab
-ENV JUPYTER_CONFIG_DIR /srv/.deep-start/
-# Necessary for the Jupyter Lab terminal
+ENV JUPYTER_CONFIG_DIR /srv/.jupyter/
 ENV SHELL /bin/bash
 RUN if [ "$jlab" = true ]; then \
-       # by default has to work (1.2.0 wrongly required nodejs and npm)
-       pip3 install --no-cache-dir jupyterlab ; \
+       pip install --no-cache-dir jupyterlab ; \
+       git clone https://github.com/deephdc/deep-jupyter /srv/.jupyter ; \
     else echo "[INFO] Skip JupyterLab installation!"; fi
 
-# Install user app
+
+
 RUN git clone -b $branch https://github.com/woutdecrop/phyto-plankton-classification && \
     cd  phyto-plankton-classification && \
     pip3 install --no-cache-dir -e . && \
+    rm -rf /root/.cache/pip/* && \
+    rm -rf /tmp/* && \
     cd ..
+# Install user app:
+# RUN git clone -b $branch https://github.com/deephdc/image-classification-tf && \
+#     cd image-classification-tf && \
+#     pip install --no-cache-dir -e . && \
+#     rm -rf /root/.cache/pip/* && \
+#     rm -rf /tmp/* && \
+#     cd ..
 
-# Open ports: DEEPaaS (5000), Monitoring (6006), Jupyter (8888)
-EXPOSE 5000 6006 8888
+# Download network weights
+# ENV SWIFT_CONTAINER https://api.cloud.ifca.es:8080/swift/v1/imagenet-tf/
+# ENV MODEL_TAR default_imagenet.tar.xz
 
-# Launch deepaas
-CMD ["deepaas-run", "--listen-ip", "0.0.0.0", "--listen-port", "5000"]
+# RUN curl --insecure -o ./image-classification-tf/models/${MODEL_TAR} \
+#     ${SWIFT_CONTAINER}${MODEL_TAR}
+
+# RUN cd image-classification-tf/models && \
+#         tar -xf ${MODEL_TAR}
+
+# Open DEEPaaS port
+EXPOSE 5000
+
+# Open Monitoring port
+EXPOSE 6006
+
+# Open JupyterLab port
+EXPOSE 8888
+
+# Account for OpenWisk functionality (deepaas >=0.4.0) + proper docker stop
+CMD ["deepaas-run", "--openwhisk-detect", "--listen-ip", "0.0.0.0", "--listen-port", "5000"]
