@@ -1,10 +1,9 @@
 {
-    "title": "phytoplankton species classifier",
+    "title": "Phytoplankton species classifier (VLIZ)",
     "summary": "",
     "description": [
-        "phytoplankton species classifier is an application using the DEEPaaS API.\n",
-        "Write additional information for your users (how to predict, how to retrain,",
-        "dataset description, training description, etc)."
+        "Phytoplankton species classifier is an application to classify phytoplankton, features DEEPaaS API.\n",
+        "Provided by VLIZ (Flanders Marine Institute)"
     ],
     "keywords": [
         "docker",
