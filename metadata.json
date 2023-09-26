@@ -1,8 +1,8 @@
 {
-    "title": "phytoplankton_species_classifier",
+    "title": "phytoplankton species classifier",
     "summary": "",
     "description": [
-        "phytoplankton_species_classifier is an application using the DEEPaaS API.\n",
+        "phytoplankton species classifier is an application using the DEEPaaS API.\n",
         "Write additional information for your users (how to predict, how to retrain,",
         "dataset description, training description, etc)."
     ],
@@ -36,3 +36,4 @@
         }
     ]
 }
+
