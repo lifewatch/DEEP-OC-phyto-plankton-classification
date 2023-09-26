@@ -9,7 +9,7 @@
     "keywords": [
         "docker",
         "api-v2",
-	"vo.imagine-ai.eu",
+	    "vo.imagine-ai.eu"
     ],
     "license": "MIT",
     "date_creation": "2023-08-10",
