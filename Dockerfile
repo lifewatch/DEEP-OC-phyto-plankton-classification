@@ -13,7 +13,7 @@ ENV CONTAINER_VERSION "0.1"
 ENV CONTAINER_DESCRIPTION "DEEP as a Service Container: phyt-plankton Classification"
 
 # What user branch to clone (!)
-ARG branch=vliz
+ARG branch=master
 
 # Install ubuntu updates and python related stuff
 # link python3 to python, pip3 to pip, if needed
