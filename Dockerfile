@@ -14,10 +14,6 @@ ENV CONTAINER_DESCRIPTION "DEEP as a Service Container: phyt-plankton Classifica
 
 # What user branch to clone (!)
 ARG branch=vliz
-# If to install JupyterLab
-ARG jlab=true
-# Oneclient version
-ARG oneclient_ver=19.02.0.rc2-1~bionic
 
 # Install ubuntu updates and python related stuff
 # link python3 to python, pip3 to pip, if needed
@@ -45,23 +41,6 @@ RUN apt-get update && \
 RUN pip3 install --upgrade pip setuptools wheel \
     && pip3 install opencv-python==3.4.17.61
 
-# RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-#     apt-get install -y --no-install-recommends \
-#          git \
-#          curl \
-#          wget \
-#          psmisc \
-#          python3-setuptools \
-#          python3-pip \
-#          python3-wheel && \
-#     apt-get clean && \
-#     rm -rf /var/lib/apt/lists/* && \
-#     rm -rf /root/.cache/pip/* && \
-#     rm -rf /tmp/* && \
-#     python --version && \
-#     pip --version
-
-# RUN pip install --upgrade pip setuptools wheel
 
 # # Needed for open-cv
 # RUN apt-get update && \
@@ -86,18 +65,18 @@ RUN wget https://downloads.rclone.org/rclone-current-linux-amd64.deb && \
     rm -rf /root/.cache/pip/* && \
     rm -rf /tmp/*
 
-# Install oneclient for ONEDATA
-RUN curl -sS  http://get.onedata.org/oneclient-1902.sh | bash -s -- oneclient="$oneclient_ver" && \
-    apt-get clean && \
-    mkdir -p /mnt/onedata && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -rf /tmp/*
+# Onedata is currently not supported @2023
+## Install oneclient for ONEDATA
+#RUN curl -sS  http://get.onedata.org/oneclient-1902.sh | bash -s -- oneclient="$oneclient_ver" && \
+#    apt-get clean && \
+#    mkdir -p /mnt/onedata && \
+#    rm -rf /var/lib/apt/lists/* && \
+#    rm -rf /tmp/*
 
 # Install deep-start script
 # N.B.: This repository also contains run_jupyter.sh
 RUN git clone https://github.com/deephdc/deep-start /srv/.deep-start && \
-    ln -s /srv/.deep-start/deep-start.sh /usr/local/bin/deep-start && \
-    ln -s /srv/.deep-start/run_jupyter.sh /usr/local/bin/run_jupyter
+    ln -s /srv/.deep-start/deep-start.sh /usr/local/bin/deep-start
 
 # Install FLAAT (FLAsk support for handling Access Tokens)
 RUN pip install --no-cache-dir flaat && \
@@ -117,32 +96,13 @@ RUN pip install --no-cache-dir entry_point_inspector && \
     rm -rf /root/.cache/pip/* && \
     rm -rf /tmp/*
 
-# Install DEEP debug_log scripts:
-RUN git clone https://github.com/deephdc/deep-debug_log /srv/.debug_log
-
-# Install JupyterLab
-ENV JUPYTER_CONFIG_DIR /srv/.jupyter/
-ENV SHELL /bin/bash
-RUN if [ "$jlab" = true ]; then \
-       pip install --no-cache-dir jupyterlab ; \
-       git clone https://github.com/deephdc/deep-jupyter /srv/.jupyter ; \
-    else echo "[INFO] Skip JupyterLab installation!"; fi
-
-
-
+# Install user app:
 RUN git clone -b $branch https://github.com/woutdecrop/phyto-plankton-classification && \
     cd  phyto-plankton-classification && \
     pip3 install --no-cache-dir -e . && \
     rm -rf /root/.cache/pip/* && \
     rm -rf /tmp/* && \
     cd ..
-# Install user app:
-# RUN git clone -b $branch https://github.com/deephdc/image-classification-tf && \
-#     cd image-classification-tf && \
-#     pip install --no-cache-dir -e . && \
-#     rm -rf /root/.cache/pip/* && \
-#     rm -rf /tmp/* && \
-#     cd ..
 
 # Download network weights
 # ENV SWIFT_CONTAINER https://api.cloud.ifca.es:8080/swift/v1/imagenet-tf/
@@ -164,4 +124,5 @@ EXPOSE 6006
 EXPOSE 8888
 
 # Account for OpenWisk functionality (deepaas >=0.4.0) + proper docker stop
-CMD ["deepaas-run", "--openwhisk-detect", "--listen-ip", "0.0.0.0", "--listen-port", "5000"]
+# OpenWhisk support is deprecated
+CMD ["deepaas-run", "--listen-ip", "0.0.0.0", "--listen-port", "5000"]
