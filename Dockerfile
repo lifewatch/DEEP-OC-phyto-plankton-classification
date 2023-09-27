@@ -19,8 +19,12 @@ ARG branch=master
 # link python3 to python, pip3 to pip, if needed
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN rm /etc/apt/sources.list.d/cuda.list
-RUN rm /etc/apt/sources.list.d/nvidia-ml.list
+# Attempt to remove the file, and continue even if it fails (|| true)
+RUN rm /etc/apt/sources.list.d/cuda.list || true
+
+# Continue with other instructions...
+
+RUN rm /etc/apt/sources.list.d/nvidia-ml.list || true
 # Install required packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
