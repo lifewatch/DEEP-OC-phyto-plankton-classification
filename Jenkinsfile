@@ -9,8 +9,8 @@ pipeline {
 
     environment {
         dockerhub_repo = "deephdc/uc-woutdecrop-deep-oc-phyto-plankton-classifier"
-        base_cpu_tag = "2.9.1"
-        base_gpu_tag = "2.9.1-gpu"
+        base_cpu_tag = "1.14.0-py3"
+        base_gpu_tag = "1.14.0-gpu-py3"
     }
 
     stages {

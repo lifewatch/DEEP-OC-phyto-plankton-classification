@@ -10,7 +10,7 @@ FROM tensorflow/tensorflow:${tag}
 # Add container's metadata to appear along the models metadata
 ENV CONTAINER_MAINTAINER "Wout Decrop <wout.decrop@vliz.be>"
 ENV CONTAINER_VERSION "0.1"
-ENV CONTAINER_DESCRIPTION "DEEP as a Service Container: phyt-plankton Classification"
+ENV CONTAINER_DESCRIPTION "DEEP as a Service Container: phyto-plankton Classification"
 
 # What user branch to clone (!)
 ARG branch=master
