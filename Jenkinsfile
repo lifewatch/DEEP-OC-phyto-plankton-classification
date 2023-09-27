@@ -95,7 +95,7 @@ pipeline {
             steps{
                 script {
                     DockerPush(id_cpu)
-                    DockerPush(id_gpu)
+                    // DockerPush(id_gpu)
                 }
             }
             post {
