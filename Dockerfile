@@ -2,7 +2,7 @@
 # tag - tag for the Base image, (e.g. 1.10.0-py3 for tensorflow)
 # branch - user repository branch to clone (default: master, other option: test)
 
-ARG tag=1.14.0-py3
+ARG tag=1.14.0-gpu-py3
 
 # Base image, e.g. tensorflow/tensorflow:1.12.0-py3
 FROM tensorflow/tensorflow:${tag}
@@ -18,6 +18,9 @@ ARG branch=master
 # Install ubuntu updates and python related stuff
 # link python3 to python, pip3 to pip, if needed
 ENV DEBIAN_FRONTEND=noninteractive
+
+RUN rm /etc/apt/sources.list.d/cuda.list
+RUN rm /etc/apt/sources.list.d/nvidia-ml.list
 # Install required packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
