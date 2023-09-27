@@ -9,9 +9,9 @@ pipeline {
 
     environment {
         dockerhub_repo = "deephdc/uc-woutdecrop-deep-oc-phyto-plankton-classification"
-        base_cpu_tag = "1.14.0-py3"}
-        // base_gpu_tag = "1.14.0-gpu-py3"
-    // }
+        base_cpu_tag = "1.14.0-py3"
+        base_gpu_tag = "1.12.0-gpu-py3"
+    }
 
     stages {
         stage('Validate metadata') {
@@ -51,11 +51,11 @@ pipeline {
                            // Check that the image starts and get_metadata responses correctly
                            sh "bash ../check_oc_artifact/check_artifact.sh ${env.dockerhub_repo}"
 
-                        //    // GPU
-                        //    id_gpu = DockerBuild(id,
-                        //                     tag: ['gpu'],
-                        //                     build_args: ["tag=${env.base_gpu_tag}",
-                        //                                  "branch=master"])
+                           // GPU
+                           id_gpu = DockerBuild(id,
+                                            tag: ['gpu'],
+                                            build_args: ["tag=${env.base_gpu_tag}",
+                                                         "branch=master"])
                         }
 
                         if (env.BRANCH_NAME == 'test') {
@@ -68,11 +68,11 @@ pipeline {
                            // Check that the image starts and get_metadata responses correctly
                            sh "bash ../check_oc_artifact/check_artifact.sh ${env.dockerhub_repo}:test"
 
-                        //    // GPU
-                        //    id_gpu = DockerBuild(id,
-                        //                     tag: ['gpu-test'],
-                        //                     build_args: ["tag=${env.base_gpu_tag}",
-                        //                                  "branch=test"])
+                           // GPU
+                           id_gpu = DockerBuild(id,
+                                            tag: ['gpu-test'],
+                                            build_args: ["tag=${env.base_gpu_tag}",
+                                                         "branch=test"])
                         }
                     }
                 }
@@ -95,7 +95,7 @@ pipeline {
             steps{
                 script {
                     DockerPush(id_cpu)
-                    // DockerPush(id_gpu)
+                    DockerPush(id_gpu)
                 }
             }
             post {
