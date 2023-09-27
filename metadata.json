@@ -13,8 +13,8 @@
     "license": "MIT",
     "date_creation": "2023-08-10",
     "sources": {
-		"dockerfile_repo": "https://github.com/woutdecrop/DEEP-OC-phytoplankton_species_classifier",
-		"docker_registry_repo": "deephdc/uc-woutdecrop-deep-oc-phytoplankton_species_classifier",
+		"dockerfile_repo": "https://github.com/woutdecrop/DEEP-OC-phyto-plankton-classification",
+		"docker_registry_repo": "deephdc/uc-woutdecrop-DEEP-OC-phyto-plankton-classification",
 		"code": "https://github.com/woutdecrop/phyto-plankton-classification"
 	},
     "continuous_integration": {
