@@ -1,6 +1,6 @@
 {
     "title": "Phytoplankton species classifier (VLIZ)",
-    "summary": "This time I added gpu 12 in stead of 14",
+    "summary": "Everything should work now!",
     "description": [
         "Phytoplankton species classifier is an application to classify phytoplankton, features DEEPaaS API.\n",
         "Provided by VLIZ (Flanders Marine Institute), GPU tag not working"
