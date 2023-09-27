@@ -18,8 +18,8 @@
 		"code": "https://github.com/woutdecrop/phyto-plankton-classification"
 	},
     "continuous_integration": {
-        "build_status_badge": "https://jenkins.indigo-datacloud.eu/buildStatus/icon?job=Pipeline-as-code/DEEP-OC-org/UC-woutdecrop-DEEP-OC-phytoplankton_species_classifier/master",
-        "build_status_url": "https://jenkins.indigo-datacloud.eu/job/Pipeline-as-code/job/DEEP-OC-org/job/UC-woutdecrop-DEEP-OC-phytoplankton_species_classifier/job/master"
+        "build_status_badge": "https://jenkins.indigo-datacloud.eu/buildStatus/icon?job=Pipeline-as-code/DEEP-OC-org/UC-woutdecrop-DEEP-OC-phyto-plankton-classification/master",
+        "build_status_url": "https://jenkins.indigo-datacloud.eu/job/Pipeline-as-code/job/DEEP-OC-org/job/UC-woutdecrop-DEEP-OC-phyto-plankton-classification/job/master"
     },
     "tosca": [
         {
