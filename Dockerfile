@@ -105,7 +105,7 @@ RUN pip install --no-cache-dir entry_point_inspector && \
     rm -rf /tmp/*
 
 # Install user app:
-RUN git clone -b $branch https://github.com/woutdecrop/phyto-plankton-classification && \
+RUN git clone -b $branch https://lifewatch/DEEP-OC-phyto-plankton-classification && \
     cd  phyto-plankton-classification && \
     pip3 install --no-cache-dir -e . && \
     rm -rf /root/.cache/pip/* && \

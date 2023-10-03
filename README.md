@@ -5,7 +5,7 @@
 # DEEP-OC-phyto-plankton-classification
 [![Build Status](https://jenkins.indigo-datacloud.eu/buildStatus/icon?job=Pipeline-as-code/DEEP-OC-org/UC-woutdecrop-DEEP-OC-phyto-plankton-classification/master)](https://jenkins.indigo-datacloud.eu/job/Pipeline-as-code/job/DEEP-OC-org/job/UC-woutdecrop-DEEP-OC-phyto-plankton-classification/job/master)
 
-This is a container that will run the [phyto-plankton-classification](https://github.com/woutdecrop/phyto-plankton-classification) application leveraging the DEEP as a Service API component ([DEEPaaS API V2](https://github.com/indigo-dc/DEEPaaS)).
+This is a container that will run the [phyto-plankton-classification](https://lifewatch/DEEP-OC-phyto-plankton-classification) application leveraging the DEEP as a Service API component ([DEEPaaS API V2](https://github.com/indigo-dc/DEEPaaS)).
 
     
 ## Running the container
@@ -26,7 +26,7 @@ This command will pull the Docker container from the Docker Hub [deephdc](https:
 
 If you want to build the container directly in your machine (because you want to modify the `Dockerfile` for instance) follow the following instructions:
 ```bash
-git clone https://github.com/woutdecrop/phyto-plankton-classification
+git clone https://lifewatch/DEEP-OC-phyto-plankton-classification
 cd DEEP-OC-phyto-plankton-classification
 docker build -t deephdc/uc-woutdecrop-DEEP-OC-phyto-plankton-classification .
 docker run -ti -p 5000:5000 -p 6006:6006 -p 8888:8888 deephdc/uc-woutdecrop-DEEP-OC-phyto-plankton-classification
