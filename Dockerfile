@@ -2,7 +2,7 @@
 # tag - tag for the Base image, (e.g. 1.10.0-py3 for tensorflow)
 # branch - user repository branch to clone (default: master, other option: test)
 
-ARG tag=1.14.0-py3
+ARG tag=2.3.3
 
 # Base image, e.g. tensorflow/tensorflow:1.12.0-py3
 FROM tensorflow/tensorflow:${tag}
@@ -19,12 +19,12 @@ ARG branch=master
 # link python3 to python, pip3 to pip, if needed
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Attempt to remove the file, and continue even if it fails (|| true)
-RUN rm /etc/apt/sources.list.d/cuda.list || true
+# # Attempt to remove the file, and continue even if it fails (|| true)
+# RUN rm /etc/apt/sources.list.d/cuda.list || true
 
-# Continue with other instructions...
+# # Continue with other instructions...
 
-RUN rm /etc/apt/sources.list.d/nvidia-ml.list || true
+# RUN rm /etc/apt/sources.list.d/nvidia-ml.list || true
 # Install required packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -83,7 +83,8 @@ RUN wget https://downloads.rclone.org/rclone-current-linux-amd64.deb && \
 # Install deep-start script
 # N.B.: This repository also contains run_jupyter.sh
 RUN git clone https://github.com/deephdc/deep-start /srv/.deep-start && \
-    ln -s /srv/.deep-start/deep-start.sh /usr/local/bin/deep-start
+    ln -s /srv/.deep-start/deep-start.sh /usr/local/bin/deep-start && \
+    ln -s /srv/.deep-start/run_jupyter.sh /usr/local/bin/run_jupyter
 
 # Install FLAAT (FLAsk support for handling Access Tokens)
 RUN pip install --no-cache-dir flaat && \
@@ -112,14 +113,15 @@ RUN git clone -b $branch https://github.com/woutdecrop/phyto-plankton-classifica
     cd ..
 
 # Download network weights
-# ENV SWIFT_CONTAINER https://api.cloud.ifca.es:8080/swift/v1/imagenet-tf/
-# ENV MODEL_TAR default_imagenet.tar.xz
+ENV SWIFT_CONTAINER https://api.cloud.ifca.es:8080/swift/v1/phytoplankton-tf/
+ENV MODEL_TAR phytoplankton.tar.xz
 
-# RUN curl --insecure -o ./image-classification-tf/models/${MODEL_TAR} \
-#     ${SWIFT_CONTAINER}${MODEL_TAR}
+RUN curl --insecure -o ./phyto-plankton-classification/models/${MODEL_TAR} \
+    ${SWIFT_CONTAINER}${MODEL_TAR}
 
-# RUN cd image-classification-tf/models && \
-#         tar -xf ${MODEL_TAR}
+RUN cd phyto-plankton-classification/models && \
+    tar -xf ${MODEL_TAR} &&\
+    rm ${MODEL_TAR}
 
 # Open DEEPaaS port
 EXPOSE 5000
