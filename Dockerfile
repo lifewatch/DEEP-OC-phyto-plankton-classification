@@ -2,7 +2,7 @@
 # tag - tag for the Base image, (e.g. 1.10.0-py3 for tensorflow)
 # branch - user repository branch to clone (default: master, other option: test)
 
-ARG tag=2.3.3
+ARG tag=2.3.3-gpu
 
 # Base image, e.g. tensorflow/tensorflow:1.12.0-py3
 FROM tensorflow/tensorflow:${tag}
@@ -19,12 +19,11 @@ ARG branch=master
 # link python3 to python, pip3 to pip, if needed
 ENV DEBIAN_FRONTEND=noninteractive
 
-# # Attempt to remove the file, and continue even if it fails (|| true)
-# RUN rm /etc/apt/sources.list.d/cuda.list || true
-
-# # Continue with other instructions...
-
-# RUN rm /etc/apt/sources.list.d/nvidia-ml.list || true
+# Check if the "tag" argument contains the word "GPU"
+RUN if [[ $tag == *gpu* ]]; then \
+    rm /etc/apt/sources.list.d/cuda.list || true; \
+    rm /etc/apt/sources.list.d/nvidia-ml.list || true; \
+fi
 # Install required packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
