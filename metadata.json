@@ -13,9 +13,9 @@
     "license": "MIT",
     "date_creation": "2023-08-10",
     "sources": {
-		"dockerfile_repo": "https://github.com/lifewatch/DEEP-OC-phyto-plankton-classification",
+		"dockerfile_repo": "https://github.com/lifewatch/phyto-plankton-classification",
 		"docker_registry_repo": "deephdc/uc-woutdecrop-DEEP-OC-phyto-plankton-classification",
-		"code": "https://lifewatch/DEEP-OC-phyto-plankton-classification"
+		"code": "https://github.com/lifewatch/phyto-plankton-classification"
 	},
     "continuous_integration": {
         "build_status_badge": "https://jenkins.indigo-datacloud.eu/buildStatus/icon?job=Pipeline-as-code/DEEP-OC-org/UC-woutdecrop-DEEP-OC-phyto-plankton-classification/master",
