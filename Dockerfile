@@ -101,6 +101,11 @@ RUN pip install --no-cache-dir entry_point_inspector && \
     rm -rf /root/.cache/pip/* && \
     rm -rf /tmp/*
 
+ENV JUPYTER_CONFIG_DIR /srv/.jupyter/
+ENV SHELL /bin/bash
+RUN pip install --no-cache-dir jupyterlab ; \
+    git clone https://github.com/deephdc/deep-jupyter /srv/.jupyter 
+
 # Install user app:
 RUN git clone -b $branch https://github.com/lifewatch/phyto-plankton-classification && \
     cd  phyto-plankton-classification && \
