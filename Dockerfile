@@ -19,11 +19,9 @@ ARG branch=master
 # link python3 to python, pip3 to pip, if needed
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Check if the "tag" argument contains the word "GPU"
-RUN if [[ $tag == *gpu* ]]; then \
-    rm /etc/apt/sources.list.d/cuda.list || true; \
-    rm /etc/apt/sources.list.d/nvidia-ml.list || true; \
-fi
+# Attempt to remove the file, and continue even if it fails (|| true)
+RUN rm /etc/apt/sources.list.d/cuda.list || true
+RUN rm /etc/apt/sources.list.d/nvidia-ml.list || true
 # Install required packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
