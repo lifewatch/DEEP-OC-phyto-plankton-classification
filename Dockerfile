@@ -2,7 +2,7 @@
 # tag - tag for the Base image, (e.g. 1.10.0-py3 for tensorflow)
 # branch - user repository branch to clone (default: master, other option: test)
 
-ARG tag=2.3.3-gpu
+ARG tag=2.3.3
 
 # Base image, e.g. tensorflow/tensorflow:1.12.0-py3
 FROM tensorflow/tensorflow:${tag}

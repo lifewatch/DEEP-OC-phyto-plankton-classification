@@ -1,9 +1,9 @@
 {
     "title": "Phytoplankton species classifier (VLIZ)",
-    "summary": "Everything should work now! Hopefully no high CPU",
+    "summary": "Everything should work now! TF2",
     "description": [
         "Phytoplankton species classifier is an application to classify phytoplankton, features DEEPaaS API.\n",
-        "Provided by VLIZ (Flanders Marine Institute), currenlty changing to TF2"
+        "Provided by VLIZ (Flanders Marine Institute), TF2"
     ],
     "keywords": [
         "docker",
