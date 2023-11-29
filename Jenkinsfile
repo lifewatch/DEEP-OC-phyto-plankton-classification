@@ -116,7 +116,7 @@ pipeline {
             }
             steps {
                 script {
-                    def job_result = JenkinsBuildJob("Pipeline-as-code/deephdc.github.io/pelican")
+                    def job_result = JenkinsBuildJob("Archived/deephdc.github.io/pelican")
                     job_result_url = job_result.absoluteUrl
                 }
             }
