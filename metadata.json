@@ -1,12 +1,14 @@
 {
     "title": "Phytoplankton species classifier (VLIZ)",
-    "summary": "Identify the species level of Plankton",
-    "description": [
-        "Phytoplankton species classifier is an application to classify phytoplankton, features DEEPaaS API.\n",
-        "Provided by VLIZ (Flanders Marine Institute)"
-    ],
+    "summary": "Identify the species level of Plankton for 87 classes. Testing if it renders",
+    "description": ["test"],
     "keywords": [
         "docker",
+        "Tensorflow",
+        "deep learning",
+        "pre-trained",
+        "trainable",
+        "imagine classification",
         "api-v2",
 	    "vo.imagine-ai.eu"
     ],
@@ -14,7 +16,7 @@
     "date_creation": "2023-08-10",
     "sources": {
 		"dockerfile_repo": "https://github.com/lifewatch/phyto-plankton-classification",
-		"docker_registry_repo": "deephdc/uc-woutdecrop-DEEP-OC-phyto-plankton-classification",
+		"docker_registry_repo": "https://hub.docker.com/r/deephdc/uc-woutdecrop-deep-oc-phyto-plankton-classification",
 		"code": "https://github.com/lifewatch/phyto-plankton-classification"
 	},
     "continuous_integration": {
