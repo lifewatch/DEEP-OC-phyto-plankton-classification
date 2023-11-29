@@ -1,7 +1,7 @@
 {
     "title": "Phytoplankton species classifier (VLIZ)",
     "summary": "Identify the species level of Plankton for 87 classes. Testing if it renders",
-    "description": ["test"],
+    "description": ["test with pelican"],
     "keywords": [
         "docker",
         "Tensorflow",
