@@ -1,7 +1,16 @@
 {
     "title": "Phytoplankton species classifier (VLIZ)",
     "summary": "Identify the species level of Plankton for 87 classes. Testing if it renders",
-    "description": ["test with pelican removed"],
+    "description": [
+        "Phytoplankton species classifier is an application to classify phytoplankton, features DEEPaaS API.\n",
+        "Provided by [VLIZ (Flanders Marine Institute)](https://www.vliz.be/nl)\n",
+        "Plankton, though small, plays a critical role in marine ecosystems. Identifying plankton species is vital for understanding ecosystem health, predicting harmful algal blooms, and managing marine environments. The FlowCam, a technology capturing high-resolution images of plankton, coupled with artificial intelligence (AI), has revolutionized plankton identification. ",
+        "FlowCam's ability to swiftly capture and analyze plankton images has transformed the once time-consuming process of identification. When integrated with AI, this technology can rapidly categorize and identify plankton species with remarkable accuracy, providing a comprehensive understanding of marine communities.",
+        "The benefits are numerous: real-time monitoring of marine environments, early detection of changes, support for conservation efforts, and contributing valuable data for research and policy decisions. AI-driven plankton identification is a game-changer, offering a powerful tool for researchers.\n",
+        "This Docker container contains a trained Convolutional Neural network optimized for phytoplankton identification using images. The architecture used is an Xception [1] network using Keras on top of Tensorflow 2.3.3.",
+        "The PREDICT method expects an RGB image as input (or the URL of an RGB image) and will return a JSON with the top 5 predictions.\n",
+        "As a training dataset, we have used a collection of images from VLIZ (Flanders Marine Institute) which consists of 650K images from 87 classes of phytoplankton."
+    ],
     "keywords": [
         "docker",
         "Tensorflow",
@@ -14,9 +23,10 @@
     ],
     "license": "MIT",
     "date_creation": "2023-08-10",
+    "dataset_url": "http://www.image-net.org/challenges/LSVRC/",
     "sources": {
 		"dockerfile_repo": "https://github.com/lifewatch/phyto-plankton-classification",
-		"docker_registry_repo": "https://hub.docker.com/r/deephdc/uc-woutdecrop-deep-oc-phyto-plankton-classification",
+		"docker_registry_repo": "deephdc/uc-woutdecrop-deep-oc-phyto-plankton-classification",
 		"code": "https://github.com/lifewatch/phyto-plankton-classification"
 	},
     "continuous_integration": {
