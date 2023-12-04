@@ -3,7 +3,7 @@
 </div>
 
 # DEEP-OC-phyto-plankton-classification
-[![Build Status](https://jenkins.indigo-datacloud.eu/buildStatus/icon?job=Pipeline-as-code/DEEP-OC-org/UC-woutdecrop-DEEP-OC-phyto-plankton-classification/master)](https://jenkins.indigo-datacloud.eu/job/Pipeline-as-code/job/DEEP-OC-org/job/UC-woutdecrop-DEEP-OC-phyto-plankton-classification/job/master)
+[![Build Status](https://jenkins.indigo-datacloud.eu/buildStatus/icon?job=Pipeline-as-code/DEEP-OC-org/UC-lifewatch-DEEP-OC-phyto-plankton-classification/master)](https://jenkins.indigo-datacloud.eu/job/Pipeline-as-code/job/DEEP-OC-org/job/UC-lifewatch-DEEP-OC-phyto-plankton-classification/job/master)
 
 This is a container that will run the [phyto-plankton-classification](https://github.com/lifewatch/phyto-plankton-classification) application leveraging the DEEP as a Service API component ([DEEPaaS API V2](https://github.com/indigo-dc/DEEPaaS)).
 
@@ -16,7 +16,7 @@ This is a container that will run the [phyto-plankton-classification](https://gi
 To run the Docker container directly from Docker Hub and start using the API simply run the following command:
 
 ```bash
-$ docker run -ti -p 5000:5000 -p 6006:6006 -p 8888:8888 deephdc/uc-woutdecrop-DEEP-OC-phyto-plankton-classification
+$ docker run -ti -p 5000:5000 -p 6006:6006 -p 8888:8888 deephdc/uc-lifewatch-DEEP-OC-phyto-plankton-classification
 ```
 
 This command will pull the Docker container from the Docker Hub [deephdc](https://hub.docker.com/u/deephdc/) repository and start the default command (`deepaas-run --listen-ip=0.0.0.0`).
@@ -29,8 +29,8 @@ If you want to build the container directly in your machine (because you want to
 ```bash
 git clone https://github.com/lifewatch/phyto-plankton-classification
 cd DEEP-OC-phyto-plankton-classification
-docker build -t deephdc/uc-woutdecrop-DEEP-OC-phyto-plankton-classification .
-docker run -ti -p 5000:5000 -p 6006:6006 -p 8888:8888 deephdc/uc-woutdecrop-DEEP-OC-phyto-plankton-classification
+docker build -t deephdc/uc-lifewatch-DEEP-OC-phyto-plankton-classification .
+docker run -ti -p 5000:5000 -p 6006:6006 -p 8888:8888 deephdc/uc-lifewatch-DEEP-OC-phyto-plankton-classification
 ```
 
 These three steps will download the repository from GitHub and will build the Docker container locally on your machine. You can inspect and modify the `Dockerfile` in order to check what is going on. For instance, you can pass the `--debug=True` flag to the `deepaas-run` command, in order to enable the debug mode.
