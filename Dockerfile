@@ -69,19 +69,12 @@ RUN wget https://downloads.rclone.org/rclone-current-linux-amd64.deb && \
     rm -rf /root/.cache/pip/* && \
     rm -rf /tmp/*
 
-# Onedata is currently not supported @2023
-## Install oneclient for ONEDATA
-#RUN curl -sS  http://get.onedata.org/oneclient-1902.sh | bash -s -- oneclient="$oneclient_ver" && \
-#    apt-get clean && \
-#    mkdir -p /mnt/onedata && \
-#    rm -rf /var/lib/apt/lists/* && \
-#    rm -rf /tmp/*
-
 # Install deep-start script
-# N.B.: This repository also contains run_jupyter.sh
+# * allows to run shorter command "deep-start"
+# * allows to install jupyterlab or code-server (vscode),
+#   if requested during container creation
 RUN git clone https://github.com/deephdc/deep-start /srv/.deep-start && \
-    ln -s /srv/.deep-start/deep-start.sh /usr/local/bin/deep-start && \
-    ln -s /srv/.deep-start/run_jupyter.sh /usr/local/bin/run_jupyter
+    ln -s /srv/.deep-start/deep-start.sh /usr/local/bin/deep-start
 
 # Install FLAAT (FLAsk support for handling Access Tokens)
 RUN pip install --no-cache-dir flaat && \
@@ -101,13 +94,11 @@ RUN pip install --no-cache-dir entry_point_inspector && \
     rm -rf /root/.cache/pip/* && \
     rm -rf /tmp/*
 
-ENV JUPYTER_CONFIG_DIR /srv/.jupyter/
+# Necessary for the Jupyter Lab terminal, if requested
 ENV SHELL /bin/bash
-RUN pip install --no-cache-dir jupyterlab ; \
-    git clone https://github.com/deephdc/deep-jupyter /srv/.jupyter 
 
 # Install user app:
-RUN git clone -b $branch https://github.com/lifewatch/phyto-plankton-classification && \
+RUN git clone -b $branch --depth 1 https://github.com/lifewatch/phyto-plankton-classification && \
     cd  phyto-plankton-classification && \
     pip3 install --no-cache-dir -e . && \
     rm -rf /root/.cache/pip/* && \
