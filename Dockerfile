@@ -2,7 +2,7 @@
 # tag - tag for the Base image, (e.g. 1.10.0-py3 for tensorflow)
 # branch - user repository branch to clone (default: master, other option: test)
 
-ARG tag=2.3.3
+ARG tag=1.14.0-py3
 
 # Base image, e.g. tensorflow/tensorflow:1.12.0-py3
 FROM tensorflow/tensorflow:${tag}
@@ -42,8 +42,8 @@ RUN apt-get update && \
     && rm -rf /tmp/*
 
 # Install OpenCV-Python (replace version with the one you want)
-RUN pip3 install --upgrade pip setuptools wheel \
-    && pip3 install opencv-python==3.4.17.61
+# RUN pip3 install --upgrade pip setuptools wheel \
+#     && pip3 install opencv-python==3.4.17.61
 
 
 # # Needed for open-cv
