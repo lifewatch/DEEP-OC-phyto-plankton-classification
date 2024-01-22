@@ -39,11 +39,13 @@ RUN apt-get update && \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /root/.cache/pip/* \
+    && rm -rf /tmp/*e/pip/* \
     && rm -rf /tmp/*
 
 # Install OpenCV-Python (replace version with the one you want)
-# RUN pip3 install --upgrade pip setuptools wheel \
-#     && pip3 install opencv-python==3.4.17.61
+RUN pip3 install --upgrade pip setuptools wheel \
+    && pip3 install opencv-python==3.4.17.61
+
 
 
 # # Needed for open-cv
@@ -80,6 +82,12 @@ RUN git clone https://github.com/deephdc/deep-start /srv/.deep-start && \
 RUN pip install --no-cache-dir flaat && \
     rm -rf /root/.cache/pip/* && \
     rm -rf /tmp/*
+
+
+# # Install FLAAT (FLAsk support for handling Access Tokens)
+# RUN pip install --no-cache-dir flaat && \
+#     rm -rf /root/.cache/pip/* && \
+#     rm -rf /tmp/*
 
 # Disable FLAAT authentication by default
 ENV DISABLE_AUTHENTICATION_AND_ASSUME_AUTHENTICATED_USER yes
