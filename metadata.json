@@ -36,7 +36,7 @@
     ],
     "license": "MIT",
     "date_creation": "2023-08-10",
-    "dataset_url": "https://vliz.be/en",
+    "dataset_url": "https://zenodo.org/records/10554845",
     "sources": {
 		"dockerfile_repo": "https://github.com/lifewatch/phyto-plankton-classification",
 		"docker_registry_repo": "deephdc/uc-lifewatch-deep-oc-phyto-plankton-classification",
