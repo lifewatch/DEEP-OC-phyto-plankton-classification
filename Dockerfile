@@ -131,7 +131,6 @@ RUN curl --insecure -o ./phyto-plankton-classification/models/${MODEL_TAR} \
     ${SWIFT_CONTAINER}${MODEL_TAR}
 
 
-
 # Open DEEPaaS port
 EXPOSE 5000
 
