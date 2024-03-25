@@ -127,7 +127,8 @@ RUN cd phyto-plankton-classification/models && \
 ENV SWIFT_CONTAINER https://share.services.ai4os.eu/index.php/s/GcJ3HPfWqNRoazj/download/final_model_big.h5
 ENV MODEL_TAR final_model_big.h5
 
-RUN curl --insecure -o ./phyto-plankton-classification/models/${MODEL_TAR} \
+RUN mkdir -p ./phyto-plankton-classification/models/phytoplankton/ckpts && \
+    curl --insecure -o ./phyto-plankton-classification/models/phytoplankton/ckpts/${MODEL_TAR} \
     ${SWIFT_CONTAINER}
 
 
