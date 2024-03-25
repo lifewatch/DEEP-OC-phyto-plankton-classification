@@ -29,10 +29,10 @@ pipeline {
             }
             steps{
 
-                // dir('check_oc_artifact'){
-                //     // clone checking scripts
-                //     git url: 'https://github.com/deephdc/deep-check_oc_artifact'
-                // }
+                dir('check_oc_artifact'){
+                    // clone checking scripts
+                    git url: 'https://github.com/deephdc/deep-check_oc_artifact'
+                }
 
                 dir('deep-oc-user_app'){
                     checkout scm
