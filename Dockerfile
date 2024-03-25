@@ -125,10 +125,10 @@ RUN cd phyto-plankton-classification/models && \
     rm ${MODEL_TAR}
 
 ENV SWIFT_CONTAINER https://share.services.ai4os.eu/index.php/s/GcJ3HPfWqNRoazj/download/final_model_big.h5
-ENV MODEL_TAR phytoplankton_final_model.h5
+ENV MODEL_TAR final_model_big.h5
 
 RUN curl --insecure -o ./phyto-plankton-classification/models/${MODEL_TAR} \
-    ${SWIFT_CONTAINER}${MODEL_TAR}
+    ${SWIFT_CONTAINER}
 
 
 # Open DEEPaaS port
