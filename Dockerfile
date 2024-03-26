@@ -124,7 +124,7 @@ RUN git clone -b $branch --depth 1 https://github.com/lifewatch/phyto-plankton-c
 #     tar -xf ${MODEL_TAR} &&\
 #     rm ${MODEL_TAR}
 
-ENV SWIFT_CONTAINER https://share.services.ai4os.eu/index.php/s/jfS26BjQzHx3osc
+ENV SWIFT_CONTAINER https://share.services.ai4os.eu/index.php/s/jfS26BjQzHx3osc/download
 ENV MODEL_TAR phytoplankton_update.tar.gz 
 
 RUN curl --insecure -o ./phyto-plankton-classification/models/${MODEL_TAR} \
