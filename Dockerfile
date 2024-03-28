@@ -114,15 +114,15 @@ RUN git clone -b $branch --depth 1 https://github.com/lifewatch/phyto-plankton-c
     cd ..
 
 # Download network weights
-ENV SWIFT_CONTAINER https://api.cloud.ifca.es:8080/swift/v1/phytoplankton-tf/
-ENV MODEL_TAR phytoplankton.tar.xz
+# ENV SWIFT_CONTAINER https://api.cloud.ifca.es:8080/swift/v1/phytoplankton-tf/
+# ENV MODEL_TAR phytoplankton.tar.xz
 
-RUN curl --insecure -o ./phyto-plankton-classification/models/${MODEL_TAR} \
-    ${SWIFT_CONTAINER}${MODEL_TAR}
+# RUN curl --insecure -o ./phyto-plankton-classification/models/${MODEL_TAR} \
+#     ${SWIFT_CONTAINER}${MODEL_TAR}
 
-RUN cd phyto-plankton-classification/models && \
-    tar -xf ${MODEL_TAR} &&\
-    rm ${MODEL_TAR}
+# RUN cd phyto-plankton-classification/models && \
+#     tar -xf ${MODEL_TAR} &&\
+#     rm ${MODEL_TAR}
 
 ENV SWIFT_CONTAINER https://share.services.ai4os.eu/index.php/s/jfS26BjQzHx3osc/download/
 ENV MODEL_TAR phytoplankton_update.tar.gz 
