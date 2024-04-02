@@ -127,9 +127,9 @@ RUN git clone -b $branch --depth 1 https://github.com/lifewatch/phyto-plankton-c
 # https://share.services.ai4os.eu/index.php/s/rJQPQtBReqHAPf3/download/phytoplankton_vliz.tar.gz
 # https://share.services.ai4os.eu/index.php/s/dFg9cma5FwG6PZD/download/phytoplankton_vliz.tar.xz
 # ENV SWIFT_CONTAINER https://share.services.ai4os.eu/index.php/s/jfS26BjQzHx3osc/download/
-ENV SWIFT_CONTAINER https://share.services.ai4os.eu/index.php/s/rJQPQtBReqHAPf3/download
+ENV SWIFT_CONTAINER https://share.services.ai4os.eu/index.php/s/dFg9cma5FwG6PZD/download
 # ENV MODEL_TAR phytoplankton_update.tar.gz 
-ENV MODEL_TAR phytoplankton_vliz.tar.gz
+ENV MODEL_TAR phytoplankton_vliz.tar.xz
 
 
 
@@ -137,7 +137,7 @@ RUN curl --insecure -o ./phyto-plankton-classification/models/${MODEL_TAR} \
     ${SWIFT_CONTAINER}${MODEL_TAR}
 
 RUN cd phyto-plankton-classification/models && \
-    tar -xZf ${MODEL_TAR} &&\
+    tar -xf ${MODEL_TAR} &&\
     rm ${MODEL_TAR}
 
 # RUN mkdir -p ./phyto-plankton-classification/models/phytoplankton/ckpts && \
