@@ -46,7 +46,27 @@ RUN apt-get update && \
 RUN pip3 install --upgrade pip setuptools wheel \
     && pip3 install opencv-python==3.4.17.61
 
+# Necessary for the Jupyter Lab terminal, if requested
+ENV SHELL /bin/bash
 
+# Install user app:
+RUN git clone -b $branch --depth 1 https://github.com/lifewatch/phyto-plankton-classification && \
+    cd  phyto-plankton-classification && \
+    pip3 install --no-cache-dir -e . && \
+    rm -rf /root/.cache/pip/* && \
+    rm -rf /tmp/* && \
+    cd ..
+
+
+ENV SWIFT_CONTAINER=https://share.services.ai4os.eu/index.php/s/rJQPQtBReqHAPf3/download
+ENV MODEL_TAR=phytoplankton_vliz.tar.gz
+# mkdir -p ./phyto-plankton-classification/models \
+# Download and extract the file
+RUN curl -L ${SWIFT_CONTAINER} -o ./phyto-plankton-classification/models/${MODEL_TAR} 
+RUN cd ./phyto-plankton-classification/models && \
+    tar -xzf ${MODEL_TAR} && \
+    rm ${MODEL_TAR}
+    
 # Set LANG environment
 ENV LANG C.UTF-8
 
@@ -90,26 +110,7 @@ RUN pip install --no-cache-dir deepaas && \
     rm -rf /root/.cache/pip/* && \
     rm -rf /tmp/*
 
-# Necessary for the Jupyter Lab terminal, if requested
-ENV SHELL /bin/bash
 
-# Install user app:
-RUN git clone -b $branch --depth 1 https://github.com/lifewatch/phyto-plankton-classification && \
-    cd  phyto-plankton-classification && \
-    pip3 install --no-cache-dir -e . && \
-    rm -rf /root/.cache/pip/* && \
-    rm -rf /tmp/* && \
-    cd ..
-
-
-ENV SWIFT_CONTAINER=https://share.services.ai4os.eu/index.php/s/rJQPQtBReqHAPf3/download
-ENV MODEL_TAR=phytoplankton_vliz.tar.gz
-# mkdir -p ./phyto-plankton-classification/models \
-# Download and extract the file
-RUN curl -L ${SWIFT_CONTAINER} -o ./phyto-plankton-classification/models/${MODEL_TAR} 
-RUN cd ./phyto-plankton-classification/models && \
-    tar -xzf ${MODEL_TAR} && \
-    rm ${MODEL_TAR}
 
 
 
