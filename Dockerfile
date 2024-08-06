@@ -80,13 +80,13 @@ RUN pip install --no-cache-dir flaat && \
 # Disable FLAAT authentication by default
 ENV DISABLE_AUTHENTICATION_AND_ASSUME_AUTHENTICATED_USER yes
 
-# Install DEEPaaS from PyPi:
-RUN pip install --no-cache-dir deepaas && \
+# Useful tool to debug extensions loading
+RUN pip install --no-cache-dir entry_point_inspector && \
     rm -rf /root/.cache/pip/* && \
     rm -rf /tmp/*
 
-# Useful tool to debug extensions loading
-RUN pip install --no-cache-dir entry_point_inspector && \
+# Install DEEPaaS from PyPi:
+RUN pip install --no-cache-dir deepaas && \
     rm -rf /root/.cache/pip/* && \
     rm -rf /tmp/*
 
