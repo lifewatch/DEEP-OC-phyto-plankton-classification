@@ -47,13 +47,6 @@ RUN pip3 install --upgrade pip setuptools wheel \
     && pip3 install opencv-python==3.4.17.61
 
 
-
-# # Needed for open-cv
-# RUN apt-get update && \
-#     apt-get install -y libgl1 libsm6 libxrender1 libfontconfig1 && \
-#     apt-get install -y python3-opencv
-
-
 # Set LANG environment
 ENV LANG C.UTF-8
 
@@ -72,9 +65,7 @@ RUN wget https://downloads.rclone.org/rclone-current-linux-amd64.deb && \
     rm -rf /tmp/*
 
 # Install deep-start script
-# * allows to run shorter command "deep-start"
-# * allows to install jupyterlab or code-server (vscode),
-#   if requested during container creation
+
 RUN git clone https://github.com/deephdc/deep-start /srv/.deep-start && \
     ln -s /srv/.deep-start/deep-start.sh /usr/local/bin/deep-start
 
@@ -84,10 +75,7 @@ RUN pip install --no-cache-dir flaat && \
     rm -rf /tmp/*
 
 
-# # Install FLAAT (FLAsk support for handling Access Tokens)
-# RUN pip install --no-cache-dir flaat && \
-#     rm -rf /root/.cache/pip/* && \
-#     rm -rf /tmp/*
+
 
 # Disable FLAAT authentication by default
 ENV DISABLE_AUTHENTICATION_AND_ASSUME_AUTHENTICATED_USER yes
@@ -113,20 +101,7 @@ RUN git clone -b $branch --depth 1 https://github.com/lifewatch/phyto-plankton-c
     rm -rf /tmp/* && \
     cd ..
 
-# Download network weights
-# ENV SWIFT_CONTAINER https://api.cloud.ifca.es:8080/swift/v1/phytoplankton-tf/
-# ENV MODEL_TAR phytoplankton.tar.xz
 
-# RUN curl --insecure -o ./phyto-plankton-classification/models/${MODEL_TAR} \
-#     ${SWIFT_CONTAINER}${MODEL_TAR}
-
-# RUN cd phyto-plankton-classification/models && \
-#     tar -xf ${MODEL_TAR} &&\
-#     rm ${MODEL_TAR}
-
-# https://share.services.ai4os.eu/index.php/s/rJQPQtBReqHAPf3/download/phytoplankton_vliz.tar.gz
-# https://share.services.ai4os.eu/index.php/s/dFg9cma5FwG6PZD/download/phytoplankton_vliz.tar.xz
-# ENV SWIFT_CONTAINER https://share.services.ai4os.eu/index.php/s/jfS26BjQzHx3osc/download/
 ENV SWIFT_CONTAINER=https://share.services.ai4os.eu/index.php/s/rJQPQtBReqHAPf3/download
 ENV MODEL_TAR=phytoplankton_vliz.tar.gz
 # mkdir -p ./phyto-plankton-classification/models \
@@ -136,9 +111,6 @@ RUN cd ./phyto-plankton-classification/models && \
     tar -xzf ${MODEL_TAR} && \
     rm ${MODEL_TAR}
 
-# RUN mkdir -p ./phyto-plankton-classification/models/phytoplankton/ckpts && \
-#     curl --insecure -o ./phyto-plankton-classification/models/phytoplankton/ckpts/${MODEL_TAR} \
-#     ${SWIFT_CONTAINER}
 
 
 # Open DEEPaaS port
