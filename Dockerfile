@@ -45,28 +45,6 @@ RUN apt-get update && \
 # Install OpenCV-Python (replace version with the one you want)
 RUN pip3 install --upgrade pip setuptools wheel \
     && pip3 install opencv-python==3.4.17.61
-
-# Necessary for the Jupyter Lab terminal, if requested
-ENV SHELL /bin/bash
-
-# Install user app:
-RUN git clone -b $branch --depth 1 https://github.com/lifewatch/phyto-plankton-classification && \
-    cd  phyto-plankton-classification && \
-    pip3 install --no-cache-dir -e . && \
-    rm -rf /root/.cache/pip/* && \
-    rm -rf /tmp/* && \
-    cd ..
-
-
-ENV SWIFT_CONTAINER=https://share.services.ai4os.eu/index.php/s/rJQPQtBReqHAPf3/download
-ENV MODEL_TAR=phytoplankton_vliz.tar.gz
-# mkdir -p ./phyto-plankton-classification/models \
-# Download and extract the file
-RUN curl -L ${SWIFT_CONTAINER} -o ./phyto-plankton-classification/models/${MODEL_TAR} 
-RUN cd ./phyto-plankton-classification/models && \
-    tar -xzf ${MODEL_TAR} && \
-    rm ${MODEL_TAR}
-    
 # Set LANG environment
 ENV LANG C.UTF-8
 
@@ -85,7 +63,6 @@ RUN wget https://downloads.rclone.org/rclone-current-linux-amd64.deb && \
     rm -rf /tmp/*
 
 # Install deep-start script
-
 RUN git clone https://github.com/deephdc/deep-start /srv/.deep-start && \
     ln -s /srv/.deep-start/deep-start.sh /usr/local/bin/deep-start
 
@@ -94,24 +71,33 @@ RUN pip install --no-cache-dir flaat && \
     rm -rf /root/.cache/pip/* && \
     rm -rf /tmp/*
 
-
-
-
 # Disable FLAAT authentication by default
 ENV DISABLE_AUTHENTICATION_AND_ASSUME_AUTHENTICATED_USER yes
-
-# Useful tool to debug extensions loading
-RUN pip install --no-cache-dir entry_point_inspector && \
-    rm -rf /root/.cache/pip/* && \
-    rm -rf /tmp/*
 
 # Install DEEPaaS from PyPi:
 RUN pip install --no-cache-dir deepaas && \
     rm -rf /root/.cache/pip/* && \
     rm -rf /tmp/*
 
+# Useful tool to debug extensions loading
+RUN pip install --no-cache-dir entry_point_inspector && \
+    rm -rf /root/.cache/pip/* && \
+    rm -rf /tmp/*
 
+# Necessary for the Jupyter Lab terminal, if requested
+ENV SHELL /bin/bash
 
+# Define environment variables
+ENV SWIFT_CONTAINER=https://share.services.ai4os.eu/index.php/s/rJQPQtBReqHAPf3/download
+ENV MODEL_TAR=phytoplankton_vliz.tar.gz
+
+# Clone the repository and download the file in a single layer
+RUN git clone -b master https://github.com/lifewatch/phyto-plankton-classification /tmp/phyto-plankton-classification && \
+    curl --insecure -L -o /tmp/phyto-plankton-classification/models/${MODEL_TAR} ${SWIFT_CONTAINER} && \
+    tar -xzf /tmp/phyto-plankton-classification/models/${MODEL_TAR} -C /tmp/phyto-plankton-classification/models && \
+    rm /tmp/phyto-plankton-classification/models/${MODEL_TAR} && \
+    mv /tmp/phyto-plankton-classification /srv/ && \
+    rm -rf /tmp/*
 
 
 # Open DEEPaaS port
@@ -126,3 +112,4 @@ EXPOSE 8888
 # Account for OpenWisk functionality (deepaas >=0.4.0) + proper docker stop
 # OpenWhisk support is deprecated
 CMD ["deepaas-run", "--listen-ip", "0.0.0.0", "--listen-port", "5000"]
+
