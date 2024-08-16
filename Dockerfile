@@ -45,6 +45,7 @@ RUN apt-get update && \
 # Install OpenCV-Python (replace version with the one you want)
 RUN pip3 install --upgrade pip setuptools wheel \
     && pip3 install opencv-python==3.4.17.61
+
 # Set LANG environment
 ENV LANG C.UTF-8
 
@@ -63,6 +64,9 @@ RUN wget https://downloads.rclone.org/rclone-current-linux-amd64.deb && \
     rm -rf /tmp/*
 
 # Install deep-start script
+# * allows to run shorter command "deep-start"
+# * allows to install jupyterlab or code-server (vscode),
+#   if requested during container creation
 RUN git clone https://github.com/deephdc/deep-start /srv/.deep-start && \
     ln -s /srv/.deep-start/deep-start.sh /usr/local/bin/deep-start
 
@@ -87,18 +91,24 @@ RUN pip install --no-cache-dir entry_point_inspector && \
 # Necessary for the Jupyter Lab terminal, if requested
 ENV SHELL /bin/bash
 
+# Install user app:
+RUN git clone -b $branch --depth 1 https://github.com/lifewatch/phyto-plankton-classification && \
+    cd  phyto-plankton-classification && \
+    pip3 install --no-cache-dir -e . && \
+    rm -rf /root/.cache/pip/* && \
+    rm -rf /tmp/* && \
+    cd ..
+
 # Define environment variables
 ENV SWIFT_CONTAINER=https://share.services.ai4os.eu/index.php/s/rJQPQtBReqHAPf3/download
 ENV MODEL_TAR=phytoplankton_vliz.tar.gz
+ENV MODEL_DIR=phyto-plankton-classification/models
 
-# Clone the repository and download the file in a single layer
-RUN git clone -b master https://github.com/lifewatch/phyto-plankton-classification /tmp/phyto-plankton-classification && \
-    curl --insecure -L -o /tmp/phyto-plankton-classification/models/${MODEL_TAR} ${SWIFT_CONTAINER} && \
-    tar -xzf /tmp/phyto-plankton-classification/models/${MODEL_TAR} -C /tmp/phyto-plankton-classification/models && \
-    rm /tmp/phyto-plankton-classification/models/${MODEL_TAR} && \
-    mv /tmp/phyto-plankton-classification /srv/ && \
-    rm -rf /tmp/*
-
+# Download the model tarball and extract it
+RUN curl --insecure -L -o ${MODEL_DIR}/${MODEL_TAR} ${SWIFT_CONTAINER} && \
+    cd ${MODEL_DIR} && \
+    tar -xzf ${MODEL_TAR} && \
+    rm ${MODEL_TAR}
 
 # Open DEEPaaS port
 EXPOSE 5000
@@ -112,4 +122,3 @@ EXPOSE 8888
 # Account for OpenWisk functionality (deepaas >=0.4.0) + proper docker stop
 # OpenWhisk support is deprecated
 CMD ["deepaas-run", "--listen-ip", "0.0.0.0", "--listen-port", "5000"]
-
